@@ -1,0 +1,15 @@
+CREATE KEYSPACE "PhotoFall" WITH replication = {
+  'class': 'NetworkTopologyStrategy',
+  'datacenter1': '1'
+};
+
+USE "PhotoFall";
+
+CREATE TABLE "Caches" (
+  cacheId text,
+  userId text,
+  metadata text,
+  photo blob,
+  message text,
+  PRIMARY KEY ((userId),(cacheId))
+)
