@@ -1,24 +1,29 @@
-package com.photofall.rest.status;
+package com.photofall.rest.service;
 
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-@Path("/user/{userId}/cache")
+import java.nio.ByteBuffer;
+import java.sql.SQLException;
+
 public class CacheService {
+
+	GeoStore geoStore= new GeoStore();
 	
-	GeoStore geoStore = new GeoStore();
-	
-	@POST
-	@Path("/drop")
-	@Consumes(MediaType.APPLICATION_XML)
-	public String returnHello(@PathParam("userId")String userId, String xml){ 
-//replace this String with a suitable data structure when we have the xml defined better
-		return geoStore.dropCache(userId,xml);
+	String dropCache(String cacheId, String userId, ByteBuffer xml){
+		try{
+			geoStore.populateData(cacheId, userId, xml);
+			
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		return "hello";
 	}
-	
-	@GET
-	@Path("/search")
-	@Produces(MediaType.TEXT_HTML)
-	public String returnTitle(){
-		return "<p>Java Web Service</p>";
+	String getCache(String cacheId, String userId)
+	{
+		try{
+			geoStore.getData(cacheId, userId);
+			
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		return "done";
 	}
 }
