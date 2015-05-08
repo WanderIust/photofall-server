@@ -9,9 +9,14 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.util.Arrays;
+
 import javax.imageio.ImageIO;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
+import com.photofall.rest.db.CacheService;
+
 
 
 @Path("/user/{userId}/cache/{cacheId}")
@@ -21,8 +26,8 @@ public class CacheResource {
 	
 	@GET
 	@Path("/drop")
-	@Produces(MediaType.TEXT_HTML)
-	public String returnHello(@PathParam("cacheId")String cacheId,@PathParam("userId")String userId){ 
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response returnHello(@PathParam("cacheId")String cacheId,@PathParam("userId")String userId){ 
 		//replace this String with a suitable data structure when we have the xml defined better
 		File fi = null;
 		byte[] fileContent= null;
@@ -30,9 +35,6 @@ public class CacheResource {
 		try {
 			fi = new File("/Users/sgib0001/blackbishop.png");
 			fileContent = Files.readAllBytes(fi.toPath());
-			for(byte b:fileContent){
-				System.out.print(b);
-			}
 			buffer = ByteBuffer.wrap(fileContent);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -46,15 +48,16 @@ public class CacheResource {
 	
 	@GET
 	@Path("/get")
-	@Produces(MediaType.TEXT_HTML)
-	public String returnTitle(@PathParam("cacheId")String cacheId,@PathParam("userId")String userId){
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response returnTitle(@PathParam("cacheId")String cacheId,@PathParam("userId")String userId){
 		File fi = null;
 		byte[] fileContent= null;
 		ByteBuffer buffer = null;
 		String imageHTML= "<p><img src=\"/photofall/image.png\"></p>";
-		try {
+		return cacheService.getCache(cacheId,userId);
+		/*try {
 
-			byte[] image =cacheService.getCache(cacheId,userId);
+			String image =cacheService.getCache(cacheId,userId);
 			byte[] imageWithoutCrap= Arrays.copyOfRange(image, 120, image.length);
 	
 			if(imageWithoutCrap != null) {
@@ -72,8 +75,8 @@ public class CacheResource {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		return imageHTML;
+		}*/
+		
 	}
 	
 }

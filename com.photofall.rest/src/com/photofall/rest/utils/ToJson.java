@@ -1,4 +1,4 @@
-package com.photofall.rest.service;
+package com.photofall.rest.utils;
 
 import com.datastax.driver.core.DataType;
 import org.codehaus.jettison.json.JSONArray;
@@ -33,7 +33,7 @@ public class ToJson {
 	 * @return - JSON array
 	 * @throws Exception
 	 */
-	public JSONArray toJSONArray(ResultSet rs) throws Exception {
+	public JSONArray toJSONArray(ResultSet rs){
 
         JSONArray json = new JSONArray(); //JSON array that will be returned
         String temp = null;
@@ -48,48 +48,43 @@ public class ToJson {
             	 ColumnDefinitions rsmd = r.getColumnDefinitions();
                  //each row in the ResultSet will be converted to a JSON Object
                  JSONObject obj = new JSONObject();
-                 
+                 System.out.println(rsmd.toString());
                  //loop through all the columns and place them into the JSON Object
-                 int i=0;
-                 for(int i=1; i<numColumns+1; i++) {
-
+                 for(int i=0; i<rsmd.size(); i++) {
                      String column_name = rsmd.getName(i);
-
-                     if(rsmd.getType(i).getName()==DataType.Name.LIST){
-                    	 obj.put(column_name, rs.getArray(column_name));
+                     System.out.println(i+ " " + column_name);
+             		 DataType.Name column_type = rsmd.getType(i).getName();
+                     if(column_type==DataType.Name.LIST){
+                    	 obj.put(column_name, r.getList(column_name,Object.class));
                     	 /*Debug*/ System.out.println("ToJson: ARRAY");
                      }
-                     else if(rsmd.getType(i).getName()==DataType.Name.BIGINT){
-                    	 obj.put(column_name, rs.getInt(column_name));
+                     else if(column_type==DataType.Name.BIGINT){
+                    	 obj.put(column_name, r.getVarint(column_name));
                     	 /*Debug*/ System.out.println("ToJson: BIGINT");
                      }
-                     else if(rsmd.getType(i).getName()==DataType.Name.BOOLEAN){
-                    	 obj.put(column_name, rs.getBoolean(column_name));
+                     else if(column_type==DataType.Name.BOOLEAN){
+                    	 obj.put(column_name, r.getBool(column_name));
                     	 /*Debug*/ System.out.println("ToJson: BOOLEAN");
                      }
-                     else if(rsmd.getType(i).getName()==DataType.Name.BLOB){
-                    	 obj.put(column_name, rs.getBlob(column_name));
+                     else if(column_type==DataType.Name.BLOB){
+                    	 obj.put(column_name, r.getBytes(column_name));
                     	 /*Debug*/ System.out.println("ToJson: BLOB");
                      }
-                     else if(rsmd.getType(i).getName()==DataType.Name.DOUBLE){
-                    	 obj.put(column_name, rs.getDouble(column_name)); 
+                     else if(column_type==DataType.Name.DOUBLE){
+                    	 obj.put(column_name, r.getDouble(column_name)); 
                     	 /*Debug*/ System.out.println("ToJson: DOUBLE");
                      }
-                     else if(rsmd.getType(i).getName()==DataType.Name.FLOAT){
-                    	 obj.put(column_name, rs.getFloat(column_name));
+                     else if(column_type==DataType.Name.FLOAT){
+                    	 obj.put(column_name, r.getFloat(column_name));
                     	 /*Debug*/ System.out.println("ToJson: FLOAT");
                      }
-                     else if(rsmd.getType(i).getName()==DataType.Name.INTEGER){
-                    	 obj.put(column_name, rs.getInt(column_name));
+                     else if(column_type==DataType.Name.INT){
+                    	 obj.put(column_name, r.getInt(column_name));
                     	 /*Debug*/ System.out.println("ToJson: INTEGER");
                      }
-                     else if(rsmd.getType(i).getName()==DataType.Name.NVARCHAR){
-                    	 obj.put(column_name, rs.getNString(column_name));
-                    	 /*Debug*/ System.out.println("ToJson: NVARCHAR");
-                     }
-                     else if(rsmd.getType(i).getName()==DataType.Name.VARCHAR){
+                     else if(column_type==DataType.Name.VARCHAR){
                     	 
-                    	 temp = rs.getString(column_name); //saving column data to temp variable
+                    	 temp = r.getString(column_name); //saving column data to temp variable
                     	 temp = ESAPI.encoder().canonicalize(temp); //decoding data to base state
                     	 temp = ESAPI.encoder().encodeForHTML(temp); //encoding to be browser safe
                     	 obj.put(column_name, temp); //putting data into JSON object
@@ -97,31 +92,14 @@ public class ToJson {
                     	 //obj.put(column_name, rs.getString(column_name));
                     	 // /*Debug*/ System.out.println("ToJson: VARCHAR");
                      }
-                     else if(rsmd.getType(i).getName()==DataType.Name.TINYINT){
-                    	 obj.put(column_name, rs.getInt(column_name));
-                    	 /*Debug*/ System.out.println("ToJson: TINYINT");
-                     }
-                     else if(rsmd.getType(i).getName()==DataType.Name.SMALLINT){
-                    	 obj.put(column_name, rs.getInt(column_name));
-                    	 /*Debug*/ System.out.println("ToJson: SMALLINT");
-                     }
-                     else if(rsmd.getType(i).getName()==DataType.Name.DATE){
-                    	 obj.put(column_name, rs.getDate(column_name));
-                    	 /*Debug*/ System.out.println("ToJson: DATE");
-                     }
-                     else if(rsmd.getType(i).getName()==DataType.Name.TIMESTAMP){
-                    	 obj.put(column_name, rs.getTimestamp(column_name));
+                     else if(column_type==DataType.Name.TIMESTAMP){
+                    	 obj.put(column_name, r.getDate(column_name));
                     	 /*Debug*/ System.out.println("ToJson: TIMESTAMP");
                      }
-                     else if(rsmd.getType(i).getName()==DataType.Name.NUMERIC){
-                    	 obj.put(column_name, rs.getBigDecimal(column_name));
+                     else if(column_type==DataType.Name.DECIMAL){
+                    	 obj.put(column_name, r.getDecimal(column_name));
                     	 // /*Debug*/ System.out.println("ToJson: NUMERIC");
                       }
-                     else {
-                    	 obj.put(column_name, rs.getObject(column_name));
-                    	 /*Debug*/ System.out.println("ToJson: Object "+column_name);
-                     } 
-                 		i++;
                     }//end foreach
                  
                  json.put(obj);
