@@ -1,21 +1,14 @@
 package com.photofall.rest.service;
 
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.file.Files;
-import java.util.Arrays;
 
-import javax.imageio.ImageIO;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
-import com.photofall.rest.db.CacheService;
 
 
 
@@ -32,6 +25,7 @@ public class CacheResource {
 		File fi = null;
 		byte[] fileContent= null;
 		ByteBuffer buffer = null;
+		System.out.println("Drop the bass");
 		try {
 			fi = new File("/Users/sgib0001/blackbishop.png");
 			fileContent = Files.readAllBytes(fi.toPath());
@@ -43,6 +37,7 @@ public class CacheResource {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		System.out.println("Drop the bass");
 		return cacheService.dropCache(cacheId,userId,buffer);
 	}
 	

@@ -1,4 +1,4 @@
-package com.photofall.rest.db;
+package com.photofall.rest.service;
 
 import java.nio.ByteBuffer;
 import java.sql.SQLException;
@@ -10,6 +10,7 @@ public class CacheService {
 	GeoStore geoStore= new GeoStore();
 	
 	public Response dropCache(String cacheId, String userId, ByteBuffer xml){
+		System.out.println("println");
 		try{
 			return(Response.ok(geoStore.populateData(cacheId, userId, xml)).build());
 			

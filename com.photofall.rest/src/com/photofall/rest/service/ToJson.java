@@ -1,4 +1,4 @@
-package com.photofall.rest.utils;
+package com.photofall.rest.service;
 
 import com.datastax.driver.core.DataType;
 import org.codehaus.jettison.json.JSONArray;
@@ -59,7 +59,7 @@ public class ToJson {
                     	 /*Debug*/ System.out.println("ToJson: ARRAY");
                      }
                      else if(column_type==DataType.Name.BIGINT){
-                    	 obj.put(column_name, r.getVarint(column_name));
+                    	 obj.put(column_name, r.getLong(column_name));
                     	 /*Debug*/ System.out.println("ToJson: BIGINT");
                      }
                      else if(column_type==DataType.Name.BOOLEAN){
