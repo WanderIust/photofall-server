@@ -3,32 +3,46 @@ package com.photofall.rest.service;
 import java.nio.ByteBuffer;
 
 public class Cache {
-	int userId;
-	int cacheId;
-	int expiration;
+	String userId;
+    String cacheId;
+    int expiration;
 	String message;
 	ByteBuffer photo;
-	
-	Cache(int userId, int cacheId, int expiration, String message, ByteBuffer photo){
+
+  	public Cache(String userId, String cacheId, int expiration, String message, ByteBuffer photo){
 		this.userId= userId;
 		this.cacheId= cacheId;
 		this.expiration= expiration;
 		this.message= message;
 		this.photo = photo;
 	}
-	int getUserId(){
+    public String getUserId(){
 		return userId;
 	}
-	int getCacheId(){
+
+    public void setUserId(String userId){ this.userId=userId; }
+
+    public String getCacheId(){
 		return cacheId;
 	}
-	int getExpiration(){
+
+    public void setCacheId(String cacheId){ this.cacheId=cacheId; }
+
+    public long getExpiration(){
 		return expiration;
 	}
-	String getMessage(){
+
+    public void setExpiration(int expiration){this.expiration=expiration;}
+
+    public String getMessage(){
 		return message;
 	}
-	ByteBuffer getPhoto(){
+
+    public void setMessage(String message){this.message=message;}
+
+    public ByteBuffer getPhoto(){
 		return photo;
 	}
+
+    public void setPhoto(ByteBuffer photo){this.photo=photo;}
 }

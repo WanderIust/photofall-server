@@ -1,46 +1,55 @@
 package com.photofall.rest.service;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.file.Files;
+import com.sun.jersey.api.core.InjectParam;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
-
+import java.io.File;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.file.Files;
 
 @Path("/user/{userId}/cache/{cacheId}")
 public class CacheResource {
-	
-	CacheService cacheService = new CacheService();
-	
+
+    @InjectParam
+	CacheService cacheService;
+
 	@GET
 	@Path("/drop")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response returnHello(@PathParam("cacheId")String cacheId,@PathParam("userId")String userId){ 
+	public Response returnHello(@PathParam("cacheId")String cacheId,@PathParam("userId")String userId,@QueryParam("expiration")int expiration){
 		//replace this String with a suitable data structure when we have the xml defined better
 		File fi = null;
 		byte[] fileContent= null;
 		ByteBuffer buffer = null;
-		System.out.println("Drop the bass");
+
+        System.out.println("Drop the bass");
 		try {
 			fi = new File("/Users/sgib0001/blackbishop.png");
 			fileContent = Files.readAllBytes(fi.toPath());
 			buffer = ByteBuffer.wrap(fileContent);
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		System.out.println("Drop the bass");
-		return cacheService.dropCache(cacheId,userId,buffer);
+		return cacheService.dropCache(cacheId,userId,expiration,buffer);
 	}
-	
+    @GET
+    @Path("delete")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteCache(@PathParam("cacheId")String cacheId,@PathParam("userId")String userId){
+        return cacheService.deleteCache(cacheId,userId);
+    }
+
+	@GET
+    @Path("/get/first")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response returnFirst(@PathParam("cacheId")String cacheId,@PathParam("userId")String userId){
+        return cacheService.getFirst(cacheId,userId);
+    }
 	@GET
 	@Path("/get")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -73,5 +82,4 @@ public class CacheResource {
 		}*/
 		
 	}
-	
 }

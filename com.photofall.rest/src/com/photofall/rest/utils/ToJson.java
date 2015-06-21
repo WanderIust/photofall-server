@@ -48,7 +48,7 @@ public class ToJson {
             	 ColumnDefinitions rsmd = r.getColumnDefinitions();
                  //each row in the ResultSet will be converted to a JSON Object
                  JSONObject obj = new JSONObject();
-                 System.out.println(rsmd.toString());
+                 System.out.println("Convertering "+rsmd.toString());
                  //loop through all the columns and place them into the JSON Object
                  for(int i=0; i<rsmd.size(); i++) {
                      String column_name = rsmd.getName(i);

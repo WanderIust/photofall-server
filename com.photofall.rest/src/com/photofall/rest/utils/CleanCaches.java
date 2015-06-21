@@ -1,48 +1,78 @@
 package com.photofall.rest.service;
 
+import com.sun.jersey.api.core.InjectParam;
+import org.springframework.stereotype.Component;
+
 import java.sql.SQLException;
-import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
+@Component
 public class CleanCaches {
-	
-	ScheduledFuture<?> scheduledFuture;
-	ScheduledExecutorService scheduledExecutorService;
-	GeoStore geoStore = new GeoStore();
-	Cache nextCache;
-	
-	final Runnable cleaner = new Runnable(){
-		public void run(){
-			//delete cache
-			try {
-				geoStore.deleteData(nextCache);
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			System.out.println("deleted cache");
-			next();
-		}
-	};
-	
-	CleanCaches(Cache cache){
-		this.nextCache=cache;
-		scheduledExecutorService = Executors.newScheduledThreadPool(1);
-		scheduledFuture = scheduledExecutorService.schedule(cleaner,cache.getExpiration(),TimeUnit.SECONDS);
 
-	}
-	void updateCache(Cache cache){
-		scheduledFuture.cancel(false);
-		this.nextCache= cache;
-		scheduledFuture =scheduledExecutorService.schedule(cleaner,cache.getExpiration(),TimeUnit.SECONDS);
-	}
-	void next(){
-		//get next cache from db & figure out expirationTime. Then start scheduler again.
-	//	nextCache = db.getCache();
-		//nextCache = Cache.toCache(geoStore.getFirst());
-		//scheduledFuture = scheduledExecutorService.schedule(cleaner,cache.getExpiration(),TimeUnit.SECONDS);
-	}
+    @InjectParam
+    private GeoStore geoStore;
+
+    private Cache current;
+
+    private ScheduledFuture<?> result;
+
+    private boolean started = false;
+
+    public void start() {
+        started = true;
+        System.out.println("Welcome to clean caches");
+        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(10);
+        while(true) {
+            Runnable command = getNextCache();
+            System.out.println("rows: "+ geoStore.getRows()+ " cacheid: "+ current.getCacheId()+ " expiration: "+ current.getExpiration());
+            result = scheduler.schedule(command, current.getExpiration(), TimeUnit.SECONDS);
+            while (!result.isDone()) {
+                try {
+                    System.out.println("not done..");
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            System.out.println("rows: "+ geoStore.getRows()+" done");
+        }
+    }
+    public void cancel(){
+        if(result != null)
+            result.cancel(false);
+    }
+    public long getExpiration(){
+        if(current == null)
+            return Long.MAX_VALUE;
+        return System.currentTimeMillis()/1000+current.getExpiration();
+    }
+    public Runnable getNextCache(){
+        try {
+            while(current == null) {
+                System.out.println("Searching for cache");
+                Thread.sleep(1000);
+                current = geoStore.getFirst();
+            }
+        }catch(InterruptedException | SQLException e){
+            e.printStackTrace();
+        }
+        final Cache finalCurrent = current;
+        return () -> {
+            try {
+                geoStore.deleteData(finalCurrent);
+                current = null;
+            }catch(SQLException e){
+                e.printStackTrace();
+            }
+        };
+    }
+    public boolean getStarted(){
+        return started;
+    }
+    public void setGeoStore(GeoStore geoStore) {
+        this.geoStore = geoStore;
+    }
 }
