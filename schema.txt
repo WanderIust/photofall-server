@@ -1,15 +1,15 @@
-CREATE KEYSPACE "PhotoFall" WITH replication = {
-  'class': 'NetworkTopologyStrategy',
-  'datacenter1': '1'
+CREATE KEYSPACE “photoFall" WITH replication = {
+  'class': ‘SimpleStrategy’,
+  ‘replication_factor’: '1'
 };
 
-USE "PhotoFall";
+USE “photoFall";
 
 CREATE TABLE "Caches" (
   cacheId text,
   userId text,
-  metadata text,
+  expiration bigint,
   photo blob,
   message text,
-  PRIMARY KEY ((userId),(cacheId))
-)
+  PRIMARY KEY ((userId),cacheId)
+)WITH CLUSTERING ORDER BY (expiration DESC)
