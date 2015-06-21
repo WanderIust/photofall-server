@@ -1,11 +1,14 @@
-package com.photofall.rest.service;
+package com.photofall.rest.utils;
 
-import java.util.*;
-import java.sql.SQLException;
-import java.util.List;
+import com.photofall.rest.store.UserDataStore;
 
-import javax.ws.rs.*;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /*---------------------------------------*/
 //THIS PATH IS USED FOR METHOD TESTING PURPOSES//

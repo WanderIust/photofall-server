@@ -1,8 +1,9 @@
 package com.photofall.rest.service;
 
-import java.sql.SQLException;
+import com.photofall.rest.store.UserDataStore;
 
-import javax.ws.rs.core.Response;	
+import javax.ws.rs.core.Response;
+import java.sql.SQLException;
 
 public class UserService {
 	UserDataStore userStore = new UserDataStore();

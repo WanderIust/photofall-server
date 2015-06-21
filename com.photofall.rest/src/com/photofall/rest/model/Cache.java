@@ -1,4 +1,4 @@
-package com.photofall.rest.service;
+package com.photofall.rest.model;
 
 import java.nio.ByteBuffer;
 

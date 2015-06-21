@@ -1,5 +1,7 @@
 package com.photofall.rest.service;
 
+import com.photofall.rest.store.GeoStore;
+import com.photofall.rest.utils.CleanCaches;
 import com.sun.jersey.api.core.InjectParam;
 
 import javax.ws.rs.core.Response;
@@ -9,7 +11,7 @@ import java.sql.SQLException;
 public class CacheService {
 
     @InjectParam
-	GeoStore geoStore;
+    GeoStore geoStore;
 
     @InjectParam
     CleanCaches cleanCaches;

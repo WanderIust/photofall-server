@@ -1,4 +1,6 @@
-package com.photofall.rest.service;
+package com.photofall.rest.resource;
+
+import com.photofall.rest.service.UserService;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;

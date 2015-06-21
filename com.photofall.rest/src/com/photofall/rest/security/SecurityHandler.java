@@ -1,10 +1,11 @@
-package com.photofall.rest.service;
+package com.photofall.rest.security;
+
+import sun.misc.BASE64Decoder;
+import sun.misc.BASE64Encoder;
 
 import java.io.IOException;
 import java.util.Date;
 import java.util.Random;
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
 
 public class SecurityHandler {
 	private static Random rand = new Random((new Date()).getTime());

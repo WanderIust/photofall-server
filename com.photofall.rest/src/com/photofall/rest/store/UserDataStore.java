@@ -1,16 +1,13 @@
-package com.photofall.rest.service;
+package com.photofall.rest.store;
 
-import java.util.*;
-import java.sql.SQLException;
-
+import com.datastax.driver.core.*;
+import com.photofall.rest.security.SecurityHandler;
+import com.photofall.rest.utils.ToJson;
 import org.codehaus.jettison.json.JSONArray;
 
-import com.datastax.driver.core.BoundStatement;
-import com.datastax.driver.core.Cluster;
-import com.datastax.driver.core.PreparedStatement;
-import com.datastax.driver.core.ResultSet;
-import com.datastax.driver.core.Row;
-import com.datastax.driver.core.Session;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDataStore {
 	private Cluster cluster;

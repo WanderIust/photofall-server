@@ -1,5 +1,7 @@
-package com.photofall.rest.service;
+package com.photofall.rest.utils;
 
+import com.photofall.rest.model.Cache;
+import com.photofall.rest.store.GeoStore;
 import com.sun.jersey.api.core.InjectParam;
 import org.springframework.stereotype.Component;
 

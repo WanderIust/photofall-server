@@ -1,4 +1,4 @@
-package com.photofall.rest.service;
+package com.photofall.rest.utils;
 
 import com.datastax.driver.core.DataType;
 import org.codehaus.jettison.json.JSONArray;

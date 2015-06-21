@@ -1,5 +1,6 @@
-package com.photofall.rest.service;
+package com.photofall.rest.resource;
 
+import com.photofall.rest.service.CacheService;
 import com.sun.jersey.api.core.InjectParam;
 
 import javax.ws.rs.*;
