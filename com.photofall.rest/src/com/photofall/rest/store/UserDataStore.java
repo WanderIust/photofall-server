@@ -3,6 +3,7 @@ package com.photofall.rest.store;
 import com.datastax.driver.core.*;
 import com.photofall.rest.security.SecurityHandler;
 import com.photofall.rest.utils.ToJson;
+
 import org.codehaus.jettison.json.JSONArray;
 
 import java.sql.SQLException;
@@ -140,6 +141,8 @@ public class UserDataStore {
 	    	userData.add(r.getString("username")); //username
 	    	userData.add(r.getString("fname")); //firstName
 	    	userData.add(r.getString("lname")); //lastName
+	    	userData.add(r.getString("password"));
+	    	System.out.println("returned " + username + " details");
 	    }
 	    else{
 	    	System.out.println("No user present with username: "+ username);

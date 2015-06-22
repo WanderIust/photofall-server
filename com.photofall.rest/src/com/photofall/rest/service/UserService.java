@@ -3,6 +3,7 @@ package com.photofall.rest.service;
 import com.photofall.rest.store.UserDataStore;
 
 import javax.ws.rs.core.Response;
+
 import java.sql.SQLException;
 
 public class UserService {
