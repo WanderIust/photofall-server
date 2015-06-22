@@ -131,7 +131,7 @@ public class UserDataStore {
     
     //or have methods to update specific fields in UserDataTable
     
-    public List<String> retrieveUserData(String username) throws SQLException {
+    public String retrieveUserData(String username) throws SQLException { //List<String>
     	List<String> userData = new ArrayList<>();
     	PreparedStatement ps = session.prepare("SELECT * FROM UserDataTable WHERE username = ?;");
     	BoundStatement bs = new BoundStatement(ps);
@@ -148,7 +148,8 @@ public class UserDataStore {
 	    	System.out.println("No user present with username: "+ username);
 	    }
 	    close();
-	    return userData;
+	    return toJSON(rs);
+	    //return userData;
 	    
     }
     

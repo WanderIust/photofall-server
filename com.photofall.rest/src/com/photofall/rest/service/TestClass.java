@@ -76,14 +76,14 @@ public class TestClass {
 		return "<p>update user test</p>";
 	}
 	
-	@Path("/fetchuserdatatest")
+	/*@Path("/fetchuserdatatest")
 	@GET
 	@Produces(MediaType.TEXT_HTML)
 	public String fetchuser(){
 		UserDataStore uds = new UserDataStore();
 		List<String> userData = new ArrayList<>();
 		try{
-			userData = uds.retrieveUserData("woodsa22");
+			//userData = uds.retrieveUserData("woodsa22");
 		}catch(SQLException e){
 			System.out.println("OH NO!!");
 		}
@@ -93,6 +93,6 @@ public class TestClass {
 			"Last name: " + userData.get(2) + "<br>" +
 			"Encrypted Password: " + userData.get(3) + "<br>" +
 			"Decrypted Password: " + SecurityHandler.decrypt(userData.get(3));
-	}
+	}*/
 	
 }
