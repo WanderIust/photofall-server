@@ -16,11 +16,11 @@ public class UserResource {
 	UserService userService = new UserService();
 	
 	@GET
-	@Path("/add/{username}/{fName}/{lName}/{pass}")
+	@Path("/add/{username}/{mail}/{pass}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response addNewUser(@PathParam("username") String username,@PathParam("fName") String fName, @PathParam("lName") String lName, @PathParam("pass") String password){
+	public Response addNewUser(@PathParam("username") String username, @PathParam("mail") String mail, @PathParam("pass") String password){
 		System.out.println("Drop the bassss");
-		return userService.newUser(username, fName, lName, password);
+		return userService.newUser(username, mail, password);
 	}
 	
 	@GET

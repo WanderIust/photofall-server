@@ -30,7 +30,7 @@ public class TestClass {
 	public String addusertest(){
 		UserDataStore uds = new UserDataStore();
 		try{
-			uds.addUser("woodsa222","Aarown","Wuudis","password");
+			uds.addUser("woodsa222","wood.zee@mail.dcu.ie","password");
 		}catch(SQLException e){
 			System.out.println("OH NO!!");
 		}

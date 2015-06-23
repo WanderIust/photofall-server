@@ -9,10 +9,10 @@ import java.sql.SQLException;
 public class UserService {
 	UserDataStore userStore = new UserDataStore();
 	
-	public Response newUser(String username, String fName, String lName, String password){
+	public Response newUser(String username, String mail, String password){
 		System.out.println("UserService adding user");
 		try{
-			return(Response.ok(userStore.addUser(username, fName, lName, password)).build());
+			return(Response.ok(userStore.addUser(username, mail, password)).build());
 		}catch(SQLException e){
 			e.printStackTrace();
 		}

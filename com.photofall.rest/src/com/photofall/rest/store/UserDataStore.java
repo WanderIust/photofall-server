@@ -46,7 +46,7 @@ public class UserDataStore {
 	    return toJSON(rs);
     }
     
-    public String addUser(String username, String fName, String lName, String password) throws SQLException { //works - tested
+    public String addUser(String username, String mail, String password) throws SQLException { //works - tested
 
     	System.out.println("attempting to check username uniqueness");
     	PreparedStatement ps = session.prepare("SELECT * FROM UserDataTable WHERE username = ?;");
@@ -61,9 +61,9 @@ public class UserDataStore {
     	else{ //add user to UserDataTable
     		System.out.println("No occurence of username - Attempting to add new user");
     		String encPass = SecurityHandler.encrypt(password);
-    		PreparedStatement ps2 = session.prepare("INSERT INTO "+table+" (username, fName, lName, password) VALUES (?,?,?,?);");
+    		PreparedStatement ps2 = session.prepare("INSERT INTO "+table+" (username, mail, password) VALUES (?,?,?);");
     		BoundStatement bs2 = new BoundStatement(ps2);
-    		ResultSet rs2 =session.execute(bs2.bind(username, fName, lName, encPass));
+    		ResultSet rs2 =session.execute(bs2.bind(username, mail, encPass));
     		close();
     		System.out.println("Added user with user: "+ username);
     		System.out.println("User's encrypted pass is: "+ encPass);
